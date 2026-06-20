@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+import pickle
 
 # Load dataset
 filename = r"C:\Users\abuhamjad\Desktop\Qskill\housePrice_predictor\data\dataset.csv"
@@ -32,6 +33,7 @@ def get_city(address):
         return "Other"
 
 df["City"] = df["Address"].apply(get_city)
+df["Total_Rooms"] = df["Bedrooms"] + df["Bathrooms"]
 
 # Drop irrelevant columns
 df.drop(
@@ -40,8 +42,6 @@ df.drop(
         "desc",
         "Landmarks",
         "Price_sqft",
-        "latitude",
-        "longitude",
         "Address"
     ],
     inplace=True
@@ -58,7 +58,8 @@ cat_cols = X.select_dtypes(include=["object"]).columns
 # Numerical preprocessing
 numeric_transformer = Pipeline(
     steps=[
-        ("imputer", SimpleImputer(strategy="median"))
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler())
     ]
 )
 
@@ -86,16 +87,37 @@ model = Pipeline(
     ]
 )
 
+# Cross Validation
+cv_scores = cross_val_score(
+    model,
+    X,
+    y,
+    cv=5,
+    scoring="r2"
+)
+
+print("\n===== CROSS VALIDATION =====")
+print("R² Scores:", cv_scores)
+print("Average R²:", cv_scores.mean())
+
+print(df.columns.tolist())
+print(df["type_of_building"].value_counts())
+print(df["City"].value_counts())
+
 # Train/Test Split
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
-    test_size=0.2,
-    random_state=42
+    test_size=0.25,
+    random_state=1
 )
 
 # Train model
 model.fit(X_train, y_train)
+
+with open("house_price_model.pkl", "wb") as f:
+    pickle.dump(model, f)
+
 # Predict
 y_pred = model.predict(X_test)
 
