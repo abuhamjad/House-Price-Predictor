@@ -157,13 +157,13 @@ python src/app.py
 ### Model Performance
 
 <p align="center">
-  <img src="screenshots/model_metrics.png" width="800">
+  <img src="screenshots/model-metrics.png" width="800">
 </p>
 
 ### Prediction Demo
 
 <p align="center">
-  <img src="screenshots/prediction_demo.png" width="800">
+  <img src="screenshots/prediction-demo.png" width="800">
 </p>
 
 ## 💾 Saving the Trained Model
