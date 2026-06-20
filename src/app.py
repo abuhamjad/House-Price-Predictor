@@ -42,7 +42,9 @@ df.drop(
         "desc",
         "Landmarks",
         "Price_sqft",
-        "Address"
+        "Address",
+        "latitude",
+        "longitude"
     ],
     inplace=True
 )
@@ -53,7 +55,7 @@ y = df["price"]
 
 # Identify categorical and numerical columns
 num_cols = X.select_dtypes(include=["int64", "float64"]).columns
-cat_cols = X.select_dtypes(include=["object"]).columns
+cat_cols = X.select_dtypes(include=["object", "string", "category"]).columns
 
 # Numerical preprocessing
 numeric_transformer = Pipeline(
@@ -95,14 +97,6 @@ cv_scores = cross_val_score(
     cv=5,
     scoring="r2"
 )
-
-print("\n===== CROSS VALIDATION =====")
-print("R² Scores:", cv_scores)
-print("Average R²:", cv_scores.mean())
-
-print(df.columns.tolist())
-print(df["type_of_building"].value_counts())
-print(df["City"].value_counts())
 
 # Train/Test Split
 X_train, X_test, y_train, y_test = train_test_split(
@@ -188,6 +182,7 @@ while True:
             "parking": [parking],
             "Lift": [lift],
             "City": [city],
+            "Total_Rooms": [bedrooms + bathrooms],
             "Status": [status],
             "neworold": [age],
             "Furnished_status": [furnished],
