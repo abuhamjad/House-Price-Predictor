@@ -152,16 +152,19 @@ pip install -r requirements.txt
 python src/app.py
 ```
 
----
 ## 📸 Screenshots
 
 ### Model Performance
 
-![Model Performance](screenshots/model_metrics.png)
+<p align="center">
+  <img src="screenshots/model_metrics.png" width="800">
+</p>
 
 ### Prediction Demo
 
-![Prediction Demo](screenshots/prediction_demo.png)
+<p align="center">
+  <img src="screenshots/prediction_demo.png" width="800">
+</p>
 
 ## 💾 Saving the Trained Model
 
