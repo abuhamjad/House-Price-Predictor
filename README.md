@@ -183,10 +183,5 @@ This allows future predictions without retraining the model.
 
 Abu Huraira
 
-Python Developer | Machine Learning Enthusiast
-
 GitHub: https://github.com/abuhamjad
 LinkedIn: https://www.linkedin.com/in/abuhamjad/
-
-```
-```
